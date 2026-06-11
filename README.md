@@ -1,6 +1,6 @@
 # Market-Volatility-Prediction
 
-Using simple Machine Learning to directly predict stock prices is notoriously difficult (if it were that simple we'd all be rich right?) due to so many factors outside of our control, such as internal business decisions, global pandemics, erratic consumer behaviour, and unexpected trends. However, making informed decisions based on how chaotic (or volatile) the ups and downs of prices are is very useful and beneficial. This project aims to use Machine Learning to predict future volatility of the SPDR S&P 500 ETF (SPY) which is an exchange traded fund that tracks the performance of the S&P 500. In a sense, we're predicting unpredictability.
+Using simple Machine Learning to directly predict stock prices is notoriously difficult (if it were that simple we'd all be rich right?) due to so many factors outside of our control, such as internal business decisions, global pandemics, erratic consumer behaviour, and unexpected trends. However, making informed decisions based on how chaotic the ups and downs (i.e volatile) of prices are is very useful and beneficial. This project aims to use Machine Learning to predict future volatility of the SPDR S&P 500 ETF (SPY) which is an exchange traded fund that tracks the performance of the S&P 500. In a sense, we're predicting unpredictability.
 
 ### The Aim
 Using multiple different Machine Learning methods this project aims to predict future volatility of the ETF so that data driven decisions can be made in trading or investing. 
