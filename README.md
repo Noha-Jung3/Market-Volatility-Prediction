@@ -19,7 +19,7 @@ Now that we have our objective, we need to think about the general system design
 The rest I'm going to figure out as I go.
 
 ### The Data
-For this project I will use the yfincance API to get ten years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation or getting rid of rows will be necessary.
+For this project I will use the yfincance API to get around eleven years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation or getting rid of rows will be necessary.
 
 - Open = Price at the start of the day
 - High = Highest price of that day
