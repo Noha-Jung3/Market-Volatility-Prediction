@@ -16,5 +16,17 @@ Now that we have our objective, we need to think about the general system design
 - This would be a *univariate regression* task as we are predicting a single value (standard deviation of log returns)
 - And this would be an *online learning* task as we will be having a continuous stream of data for our model.
 
+The rest I'm going to figure out as I go.
+
+### The Data
+For this project I will use the yfincance API to get ten years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation or getting rid of rows will be necessary.
+
+- Open = Price at the start of the day
+- High = Highest price of that day
+- Low = Lowest price of that day
+- Close = Price at the end of the day
+- Volue = Volume traded(?)
+
+
 
 
