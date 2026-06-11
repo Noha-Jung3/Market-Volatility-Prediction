@@ -25,7 +25,7 @@ For this project I will use the yfincance API to get ten years worth of historic
 - High = Highest price of that day
 - Low = Lowest price of that day
 - Close = Price at the end of the day
-- Volue = Volume traded(?)
+- Volume = Volume traded(?)
 
 
 
