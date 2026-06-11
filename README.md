@@ -10,6 +10,7 @@ If I were working at an investment banking firm or other finance related firm th
 
 ### The System Design
 Now that we have our objective, we need to think about the general system design.
+
 **Machine Learning Design:**
 - This would be a *supervised learning* task, as we can train our model with labelled examples
 - This would be a *univariate regression* task as we are predicting a single value (standard deviation of log returns)
