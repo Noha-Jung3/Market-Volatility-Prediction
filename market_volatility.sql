@@ -20,4 +20,17 @@ VALUES (
 
 SELECT *
 FROM market_data
-LIMIT 5;
+WHERE dataset = 'validation';
+
+SELECT COUNT(*)
+FROM market_data
+
+SELECT COUNT(*)
+FROM market_data
+WHERE dataset = 'train';
+
+SELECT AVG(vol_10)
+FROM market_data
+WHERE dataset = 'train';
+
+
