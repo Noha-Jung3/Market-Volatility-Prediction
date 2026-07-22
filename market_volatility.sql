@@ -33,4 +33,7 @@ SELECT AVG(vol_10)
 FROM market_data
 WHERE dataset = 'train';
 
+ALTER USER postgres
+WITH PASSWORD 'VolatileMarket';
+
 
