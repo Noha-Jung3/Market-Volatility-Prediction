@@ -1,3 +1,4 @@
+
 CREATE TABLE market_data (
 	date DATE,
 	open FLOAT,
@@ -5,35 +6,33 @@ CREATE TABLE market_data (
 	low FLOAT,
 	close FLOAT,
 	volume BIGINT
-);
+)
 
-INSERT INTO market_data
-VALUES (
-    '2026-01-01',
-    680,
-    690,
-    675,
-    685,
-    100000000
-);
-
+SELECT COUNT(*)
+FROM raw_market_data;
 
 SELECT *
-FROM market_data
-WHERE dataset = 'validation';
+FROM engineered_features
+WHERE
+    log_return IS NULL OR
+    return_20d IS NULL OR
+    vol_20 IS NULL;
 
-SELECT COUNT(*)
-FROM market_data
+SELECT MAX("Date")
+FROM engineered_features;
 
-SELECT COUNT(*)
-FROM market_data
-WHERE dataset = 'train';
+    SELECT *
+    FROM engineered_features
+    ORDER BY "Date" DESC
+    LIMIT 1
 
-SELECT AVG(vol_10)
-FROM market_data
-WHERE dataset = 'train';
+CREATE TABLE Predictions(
+	Prediction_date DATE PRIMARY KEY,
+	
+    predicted_vol_10 DOUBLE PRECISION,
 
-ALTER USER postgres
-WITH PASSWORD 'VolatileMarket';
+    model_name TEXT,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
+);
