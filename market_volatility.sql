@@ -36,3 +36,6 @@ CREATE TABLE Predictions(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 );
+
+SELECT *
+FROM Predictions;
