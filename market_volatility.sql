@@ -38,4 +38,4 @@ CREATE TABLE Predictions(
 );
 
 SELECT *
-FROM Predictions;
+FROM raw_market_data;
