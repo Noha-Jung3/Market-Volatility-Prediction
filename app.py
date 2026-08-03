@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.predict import predict_latest
+from src.predict import update_and_predict
 
 
 app = FastAPI()
@@ -13,4 +13,4 @@ def home():
 
 @app.get("/predict")
 def predict():
-    return predict_latest()
+    return update_and_predict()
