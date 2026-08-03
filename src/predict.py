@@ -43,6 +43,6 @@ def predict_latest():
     prediction = model.predict(X)[0]
 
     return {
-        "date": latest["Date"].iloc[0],
+        "date": str(latest["Date"].iloc[0]),
         "prediction": float(prediction)
     }
