@@ -66,4 +66,3 @@ def update_and_predict():
     "prediction": prediction
     }
 
-#test
