@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from src.database import engine
 
 def engineer_features(df):
     """
@@ -65,3 +66,28 @@ def engineer_features(df):
     df = df.dropna().reset_index(drop=True)
 
     return df    
+
+def update_engineered_features():
+    raw = pd.read_sql(
+        """
+        SELECT *
+        FROM raw_market_data
+        ORDER BY "Date"
+        """,
+        engine
+    )
+
+    features = engineer_features(raw)
+
+    features.to_sql(
+        "engineered_features",
+        engine,
+        if_exists="replace",
+        index = False
+    )
+
+    return {
+    "status": "success",
+    "rows_processed": len(features),
+    "latest_date": str(features["Date"].max())}
+
