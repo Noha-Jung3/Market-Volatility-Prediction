@@ -65,3 +65,5 @@ def update_and_predict():
     "features": feature_result,
     "prediction": prediction
     }
+
+#test

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from src.predict import update_and_predict
 
-
 app = FastAPI()
 
 @app.get("/")
