@@ -90,4 +90,3 @@ def update_engineered_features():
     "status": "success",
     "rows_processed": len(features),
     "latest_date": str(features["Date"].max())}
-

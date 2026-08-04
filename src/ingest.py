@@ -30,7 +30,6 @@ def update_raw_market_data():
 
     newest_date = str(new_data["Date"].max())
 
-
     new_data.to_sql(
     "raw_market_data",
     engine,
