@@ -34,7 +34,8 @@ def get_latest_features():
     return pd.read_sql(query, engine)
 
 def save_prediction(date, prediction):
-    #save latest model prediction to PostgreSQL
+    #Save the latest model prediction to PostgreSQL.
+
     query = """
     INSERT INTO Predictions (
         Prediction_date,
@@ -46,8 +47,7 @@ def save_prediction(date, prediction):
         :predicted_vol_10,
         :model_name
     )
-
-    ON CONFLICT (Prediction Date)
+    ON CONFLICT (Prediction_date)
     DO NOTHING
     """
 
