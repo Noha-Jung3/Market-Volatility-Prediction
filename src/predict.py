@@ -46,6 +46,9 @@ def save_prediction(date, prediction):
         :predicted_vol_10,
         :model_name
     )
+
+    ON CONFLICT (Prediction Date)
+    DO NOTHING
     """
 
     with engine.begin() as connection:
@@ -69,7 +72,7 @@ def predict_latest():
 
     prediction = float(model.predict(X)[0])
 
-    prediction_date = latest["date"].iloc[0]
+    prediction_date = latest["Date"].iloc[0]
 
     save_prediction(
         prediction_date,
