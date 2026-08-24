@@ -41,6 +41,11 @@ def home():
         "message": "Market Volatility Prediction API"
     }
 
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy"
+    }
 
 @app.get("/predict")
 def predict():
