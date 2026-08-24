@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.predict import update_and_predict
 
@@ -40,13 +40,22 @@ def home():
     return {
         "message": "Market Volatility Prediction API"
     }
-
+# health endpoint so we know if something has gone wrong if it stops responding
 @app.get("/health")
 def health():
     return {
         "status": "healthy"
     }
 
+
 @app.get("/predict")
 def predict():
-    return update_and_predict()
+    #error handling 
+    try:
+        return update_and_predict()
+    #"try executing the prediction pipeline. function should run as normal if everything is in order"   
+    except Exception as e:
+    #Catch error if something goes wrong
+        raise HTTPException(status_code=500, detail=f"Prediction pipline failed: {str(e)}")
+        #tells FastAPI "return an HTTP 500 response and tell client what went wrong"
+     
