@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 from joblib import load
+from sqlalchemy import text
 
 from src.ingest import update_raw_market_data
 from src.features import update_engineered_features
@@ -32,6 +33,30 @@ def get_latest_features():
 
     return pd.read_sql(query, engine)
 
+def save_prediction(date, prediction):
+    #save latest model prediction to PostgreSQL
+    query = """
+    INSERT INTO Predictions (
+        Prediction_date,
+        predicted_vol_10,
+        model_name
+    )
+    VALUES (
+        :prediction_date,
+        :predicted_vol_10,
+        :model_name
+    )
+    """
+
+    with engine.begin() as connection:
+        connection.execute(
+            text(query),
+            {
+                "prediction_date": date,
+                "predicted_vol_10": prediction,
+                "model_name": "CatBoost"
+            }
+        )
 
 def predict_latest():
     """Predict volatility for the latest available market data."""
@@ -42,11 +67,18 @@ def predict_latest():
 
     X = latest.drop(columns=["Date"])
 
-    prediction = model.predict(X)[0]
+    prediction = float(model.predict(X)[0])
+
+    prediction_date = latest["date"].iloc[0]
+
+    save_prediction(
+        prediction_date,
+        prediction
+    )
 
     return {
-        "date": str(latest["Date"].iloc[0]),
-        "prediction": float(prediction)
+        "date": str(prediction_date),
+        "prediction": prediction
     }
 
 def update_and_predict():
