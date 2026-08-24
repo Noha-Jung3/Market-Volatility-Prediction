@@ -37,5 +37,17 @@ CREATE TABLE Predictions(
 
 );
 
+SELECT MAX("Date")
+FROM engineered_features;
+
 SELECT *
-FROM raw_market_data;
+FROM predictions 
+
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_name = 'predictions'
+ORDER BY ordinal_position;
+
+SELECT *
+FROM predictions
+ORDER BY created_at DESC;
