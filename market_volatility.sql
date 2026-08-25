@@ -51,3 +51,4 @@ ORDER BY ordinal_position;
 SELECT *
 FROM predictions
 ORDER BY created_at DESC;
+
