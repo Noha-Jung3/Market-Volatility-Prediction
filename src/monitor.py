@@ -142,3 +142,11 @@ def evaluate_predictions():
         "status": "success",
         "evaluated": len(results)
     }
+
+def run_monitoring():
+    #Run prediction monitoring process.
+    evaluation_result = evaluate_predictions()
+
+    return {
+        "evaluation": evaluation_result
+    }
