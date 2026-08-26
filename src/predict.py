@@ -7,6 +7,7 @@ from sqlalchemy import text
 from src.ingest import update_raw_market_data
 from src.features import update_engineered_features
 from src.database import engine
+from src.monitor import run_monitoring
 
 
 MODEL_PATH = (
@@ -85,6 +86,8 @@ def predict_latest():
     }
 
 def update_and_predict():
+    monitoring_result = run_monitoring()
+
     ingestion_result = update_raw_market_data()
     if ingestion_result["rows_added"] > 0:
         feature_result = update_engineered_features()
@@ -96,6 +99,7 @@ def update_and_predict():
         }
     prediction = predict_latest()
     return {
+    "monitoring": monitoring_result,
     "ingestion": ingestion_result,
     "features": feature_result,
     "prediction": prediction
