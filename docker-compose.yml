@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    container_name: market-volatility-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: VolatileMarket
+      POSTGRES_DB: market_volatility
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: market-volatility-api
+    environment:
+      DATABASE_URL: postgresql://postgres:VolatileMarket@db:5432/market_volatility
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
