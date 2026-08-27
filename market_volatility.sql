@@ -36,7 +36,6 @@ CREATE TABLE Predictions(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
 );
--- "what did the model predict?"
 
 SELECT MAX("Date")
 FROM engineered_features;
@@ -50,7 +49,7 @@ WHERE table_name = 'predictions'
 ORDER BY ordinal_position;
 
 SELECT *
-FROM predictions
+FROM prediction_per
 ORDER BY created_at DESC;
 
 CREATE TABLE prediction_performance (
@@ -70,20 +69,13 @@ CREATE TABLE prediction_performance (
 
     evaluated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- "How well did the model perform?"
--- all three errors? -> error lets us know if prediction was over predicted or under predicted
--- absolute_error lets us know about the magnitude of the error, and squared_error is useful for calculating MSE or RMSE
+-- all three errors? -> error lets us know if prediction was overshot
+
+SELECT MAX("Date") FROM raw_market_data;
 
 SELECT *
-FROM prediction_performance
+FROM raw_market_data
+ORDER BY "Date" DESC
+LIMIT 5;
 
-SELECT *
-FROM prediction_performance
-ORDER BY prediction_date DESC;
-
-SELECT
-    prediction_date,
-    predicted_vol_10,
-    actual_vol_10
-FROM prediction_performance
-WHERE prediction_date = '2026-07-28';
+SELECT COUNT(*) FROM raw_market_data;
