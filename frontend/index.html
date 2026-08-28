@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Volatility Prediction</title>
+
+```
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .value {
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    button {
+        padding: 10px 16px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #status {
+        margin-top: 15px;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<h1>Market Volatility Prediction</h1>
+<p>10-day future market volatility prediction</p>
+
+<button onclick="getPrediction()">Run Prediction</button>
+
+<div class="card">
+    <h2>Prediction</h2>
+    <div id="prediction" class="value">--</div>
+    <p id="prediction-date">Date: --</p>
+</div>
+
+<div class="card">
+    <h2>System Status</h2>
+    <p id="status">Waiting for prediction...</p>
+</div>
+
+<script>
+    async function getPrediction() {
+        const predictionElement = document.getElementById("prediction");
+        const dateElement = document.getElementById("prediction-date");
+        const statusElement = document.getElementById("status");
+
+        predictionElement.textContent = "Loading...";
+        statusElement.textContent = "Running prediction...";
+
+        try {
+            const response = await fetch("http://localhost:8000/predict");
+
+            if (!response.ok) {
+                throw new Error("API request failed");
+            }
+
+            const data = await response.json();
+
+            predictionElement.textContent =
+                data.prediction.prediction.toFixed(6);
+
+            dateElement.textContent =
+                "Date: " + data.prediction.date;
+
+            statusElement.textContent =
+                "Prediction completed successfully.";
+
+        } catch (error) {
+            predictionElement.textContent = "--";
+            statusElement.textContent =
+                "Error connecting to the API.";
+            
+            console.error(error);
+        }
+    }
+</script>
+```
+
+</body>
+</html>
