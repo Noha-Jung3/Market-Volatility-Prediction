@@ -103,6 +103,8 @@ def predict_latest():
 
     prediction_date = latest["Date"].iloc[0]
 
+    interpretation = interpret_volatility(prediction)
+
     save_prediction(
         prediction_date,
         prediction
@@ -110,7 +112,8 @@ def predict_latest():
 
     return {
         "date": str(prediction_date),
-        "prediction": prediction
+        "prediction": prediction,
+        **interpretation
     }
 
 def update_and_predict():
