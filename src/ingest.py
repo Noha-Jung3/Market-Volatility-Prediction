@@ -25,6 +25,8 @@ def update_raw_market_data():
 
     new_data = new_data[["Date", "Open", "High", "Low", "Close", "Volume"]]
 
+    new_data = new_data.dropna(subset=["Open", "High", "Low", "Close", "Volume"])
+
     if new_data.empty:
         return {"status": "up_to_date", "rows_added": 0, "latest_date": str(latest_date)}
 
