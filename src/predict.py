@@ -16,6 +16,34 @@ MODEL_PATH = (
     / "catboost_volatility_model.pkl"
 )
 
+LOW_THRESHOLD = 0.005787619929182616
+HIGH_THRESHOLD = 0.010044385374198916
+
+
+def interpret_volatility(prediction):
+    """Convert predicted volatility into an easy-to-understand category."""
+
+    if prediction < LOW_THRESHOLD:
+        return {
+            "level": "LOW",
+            "description": "Lower-than-usual expected market volatility over the next 10 trading days.",
+            "strategy": "Market conditions may be relatively calm. This can be a period to maintain your existing investment strategy rather than reacting to short-term movements."
+        }
+
+    elif prediction < HIGH_THRESHOLD:
+        return {
+            "level": "MEDIUM",
+            "description": "Moderate expected market volatility over the next 10 trading days.",
+            "strategy": "Expect some market fluctuations. Maintaining diversification and avoiding emotional reactions to short-term movements may be appropriate."
+        }
+
+    else:
+        return {
+            "level": "HIGH",
+            "description": "Higher-than-usual expected market volatility over the next 10 trading days.",
+            "strategy": "Larger price movements may occur. Investors may want to review their risk exposure, maintain diversification, and avoid making impulsive decisions based on short-term volatility."
+        }
+
 
 def load_model():
     """Load trained CatBoost model."""
