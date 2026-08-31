@@ -4,75 +4,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Volatility Prediction</title>
+
+```
+<title>Market Volatility Prediction</title>
 
 <style>
     body {
         font-family: Arial, sans-serif;
         max-width: 900px;
-        margin: 40px auto;
+        margin: 50px auto;
         padding: 0 20px;
+        background: #f7f7f7;
     }
 
     h1 {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        color: #666;
+        margin-bottom: 30px;
     }
 
     .card {
+        background: white;
         border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
+        border-radius: 10px;
+        padding: 25px;
         margin-top: 20px;
     }
 
+    .prediction-card {
+        text-align: center;
+    }
+
     .value {
-        font-size: 32px;
+        font-size: 48px;
         font-weight: bold;
+        margin: 15px 0;
+    }
+
+    .date {
+        color: #666;
+    }
+
+    .status-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .status-item h3 {
+        margin-bottom: 5px;
+    }
+
+    .status-item p {
+        margin-top: 0;
     }
 
     button {
-        padding: 10px 16px;
+        display: block;
+        margin: 30px auto 0;
+        padding: 12px 20px;
         font-size: 16px;
         cursor: pointer;
+        border: none;
+        border-radius: 6px;
     }
 
     #status {
-        margin-top: 15px;
+        margin-top: 20px;
+        text-align: center;
+        color: #666;
+    }
+
+    @media (max-width: 600px) {
+        .status-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
-
+```
 
 </head>
 
 <body>
 
+```
 <h1>Market Volatility Prediction</h1>
-<p>10-day future market volatility prediction</p>
+<p class="subtitle">10-day future market volatility prediction</p>
 
-<button onclick="getPrediction()">Run Prediction</button>
+<div class="card prediction-card">
+    <h2>Predicted Volatility</h2>
 
-<div class="card">
-    <h2>Prediction</h2>
     <div id="prediction" class="value">--</div>
-    <p id="prediction-date">Date: --</p>
+
+    <p id="prediction-date" class="date">
+        Date: --
+    </p>
 </div>
 
 <div class="card">
-    <h2>System Status</h2>
-    <p id="status">Waiting for prediction...</p>
+    <h2>Prediction Details</h2>
+
+    <div class="status-grid">
+
+        <div class="status-item">
+            <h3>Model</h3>
+            <p id="model">--</p>
+        </div>
+
+        <div class="status-item">
+            <h3>Market Data</h3>
+            <p id="data-status">--</p>
+        </div>
+
+    </div>
 </div>
+
+<button onclick="getPrediction()">
+    Run Prediction
+</button>
+
+<p id="status">
+    Waiting for prediction...
+</p>
 
 <script>
     async function getPrediction() {
-        const predictionElement = document.getElementById("prediction");
-        const dateElement = document.getElementById("prediction-date");
-        const statusElement = document.getElementById("status");
+
+        const predictionElement =
+            document.getElementById("prediction");
+
+        const dateElement =
+            document.getElementById("prediction-date");
+
+        const modelElement =
+            document.getElementById("model");
+
+        const dataStatusElement =
+            document.getElementById("data-status");
+
+        const statusElement =
+            document.getElementById("status");
 
         predictionElement.textContent = "Loading...";
         statusElement.textContent = "Running prediction...";
 
         try {
-            const response = await fetch("http://localhost:8000/predict");
+
+            const response =
+                await fetch("http://localhost:8000/predict");
 
             if (!response.ok) {
                 throw new Error("API request failed");
@@ -86,19 +168,39 @@
             dateElement.textContent =
                 "Date: " + data.prediction.date;
 
+            modelElement.textContent =
+                data.prediction.model_name || "CatBoost";
+
+            if (data.ingestion.status === "success" ||
+                data.ingestion.status === "up_to_date") {
+
+                dataStatusElement.textContent =
+                    "✓ Up to date";
+
+            } else {
+
+                dataStatusElement.textContent =
+                    "Check ingestion";
+
+            }
+
             statusElement.textContent =
                 "Prediction completed successfully.";
 
         } catch (error) {
+
             predictionElement.textContent = "--";
+            modelElement.textContent = "--";
+            dataStatusElement.textContent = "--";
+
             statusElement.textContent =
                 "Error connecting to the API.";
-            
+
             console.error(error);
         }
     }
 </script>
-
+```
 
 </body>
 </html>
