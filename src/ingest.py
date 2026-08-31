@@ -15,7 +15,7 @@ def update_raw_market_data():
     ).iloc[0,0]
 
     start_date = latest_date + pd.Timedelta(days=1)
-    new_data = yf.download("SPY", start = latest_date.strftime("%Y-%m-%d"),
+    new_data = yf.download("SPY", start = start_date.strftime("%Y-%m-%d"),
     auto_adjust=True)
 
     new_data = new_data.reset_index()
