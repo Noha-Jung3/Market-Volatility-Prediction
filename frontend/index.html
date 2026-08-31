@@ -154,10 +154,19 @@
             document.getElementById("prediction-date");
 
         const modelElement =
-            document.getElementById("model");
+    document.getElementById("model");
 
         const dataStatusElement =
             document.getElementById("data-status");
+
+        const levelElement =
+            document.getElementById("volatility-level");
+
+        const descriptionElement =
+            document.getElementById("volatility-description");
+
+        const strategyElement =
+            document.getElementById("volatility-strategy");
 
         const statusElement =
             document.getElementById("status");
@@ -185,11 +194,20 @@
             modelElement.textContent =
                 data.prediction.model_name || "CatBoost";
 
+            levelElement.textContent =
+                data.prediction.level;
+
+            descriptionElement.textContent =
+                data.prediction.description;
+
+            strategyElement.textContent =
+                data.prediction.strategy;
+
             if (data.ingestion.status === "success" ||
                 data.ingestion.status === "up_to_date") {
 
-                dataStatusElement.textContent =
-                    "✓ Up to date";
+                            dataStatusElement.textContent =
+                                "✓ Up to date";
 
             } else {
 
