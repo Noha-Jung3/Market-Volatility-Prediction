@@ -15,7 +15,7 @@ services:
     build: .
     container_name: market-volatility-api
     environment:
-      DATABASE_URL: postgresql://postgres:VolatileMarket@db:5432/market_volatility
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "8000:8000"
     depends_on:
