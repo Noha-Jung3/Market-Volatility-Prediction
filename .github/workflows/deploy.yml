@@ -25,21 +25,37 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t market-volatility-api .
+          docker build -t market-volatility-api:${{ github.sha }} .
 
       - name: Tag Docker image
         run: |
-          docker tag market-volatility-api:latest \
-            875243384735.dkr.ecr.ap-southeast-2.amazonaws.com/market-volatility-api:latest
+          docker tag market-volatility-api:${{ github.sha }} \
+            875243384735.dkr.ecr.ap-southeast-2.amazonaws.com/market-volatility-api:${{ github.sha }}
 
       - name: Push Docker image
         run: |
           docker push \
-            875243384735.dkr.ecr.ap-southeast-2.amazonaws.com/market-volatility-api:latest
+            875243384735.dkr.ecr.ap-southeast-2.amazonaws.com/market-volatility-api:${{ github.sha }}
+
+      - name: Download current ECS task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition market-volatility-api \
+            --query taskDefinition \
+            > task-definition.json
+
+      - name: Update ECS task definition with new image
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: market-volatility-api
+          image: 875243384735.dkr.ecr.ap-southeast-2.amazonaws.com/market-volatility-api:${{ github.sha }}
 
       - name: Deploy to ECS
-        run: |
-          aws ecs update-service \
-            --cluster market-volatility-cluster \
-            --service market-volatility-api-service \
-            --force-new-deployment
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: market-volatility-api-service
+          cluster: market-volatility-cluster
+          wait-for-service-stability: true
