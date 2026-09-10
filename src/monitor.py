@@ -143,6 +143,35 @@ def evaluate_predictions():
         "evaluated": len(results)
     }
 
+
+
+def get_monitoring_metrics():
+    """Retrieve aggregate performance metrics for evaluated predictions."""
+
+    query = """
+    SELECT
+        COUNT(*) AS evaluated_predictions,
+        AVG(absolute_error) AS mae,
+        SQRT(AVG(squared_error)) AS rmse,
+        AVG(error) AS mean_error,
+        MAX(model_name) AS model_name
+    FROM prediction_performance
+    """
+
+    metrics = pd.read_sql(query, engine)
+
+    row = metrics.iloc[0]
+
+    return {
+        "evaluated_predictions": int(row["evaluated_predictions"]),
+        "mae": float(row["mae"]) if pd.notna(row["mae"]) else None,
+        "rmse": float(row["rmse"]) if pd.notna(row["rmse"]) else None,
+        "mean_error": float(row["mean_error"]) if pd.notna(row["mean_error"]) else None,
+        "model_name": row["model_name"]
+    }
+
+
+
 def run_monitoring():
     #Run prediction monitoring process.
     evaluation_result = evaluate_predictions()

@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from src.predict import update_and_predict
+from src.monitor import get_monitoring_metrics
 
 
 router = APIRouter()
@@ -58,6 +59,17 @@ def predict():
     #Catch error if something goes wrong
         raise HTTPException(status_code=500, detail=f"Prediction pipline failed: {str(e)}")
         #tells FastAPI "return an HTTP 500 response and tell client what went wrong"
+
+
+@router.get("/monitoring")
+def monitoring():
+    try:
+        return get_monitoring_metrics()
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Monitoring failed: {str(e)}"
+        )
 
 
 #why do this? We're introducing separation of concerns.
