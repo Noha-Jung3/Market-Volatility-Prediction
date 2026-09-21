@@ -10,6 +10,7 @@ COPY app.py .
 COPY api/ ./api/
 COPY src/ ./src/
 COPY Models/ ./models/
+COPY scripts/ ./scripts/
 
 EXPOSE 8000
 
