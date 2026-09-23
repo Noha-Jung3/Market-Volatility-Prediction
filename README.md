@@ -187,9 +187,59 @@ Market-Volatility-Prediction/
 └── README.md
 ```
 
+### Local Development
 
+**Requirements**
 
+- Python 3.12
+- Docker Desktop
+- Git
 
+**Clone the repository**
+
+```bash
+git clone https://github.com/Noha-Jung3/Market-Volatility-Prediction.git
+cd Market-Volatility-Prediction
+```
+
+**Run with Docker Compose**
+
+```bash
+docker compose up --build
+```
+
+The local services include:
+
+- FastAPI API: `http://localhost:8000`
+- FastAPI documentation: `http://localhost:8000/docs`
+- Frontend: `http://localhost:3000`
+- PostgreSQL: `localhost:5432`
+
+**Run the prediction pipeline locally**
+
+The prediction worker can also be executed directly:
+
+```bash
+python -m scripts.run_prediction
+```
+
+### Future Improvements 
+
+Potential extensions to the project include:
+
+- Implementing systematic hyperparameter tuning and model selection
+- Adding additional market and macroeconomic features
+- Evaluating model performance across different market regimes
+- Adding more comprehensive prediction monitoring and drift detection
+- Introducing model versioning and experiment tracking
+- Adding automated retraining when model performance degrades
+- Deploying the frontend and API behind an application load balancer
+- Adding authentication and more granular API access controls
+
+### Summary
+
+This project demonstrates an end to end machine learning workflow, from financial market data ingestion and feature engineering through model development, evaluation, deployment, automated inference, database storage, and monitoring.
+The project combines data science and software engineering practices to turn a trained volatility model into a reproducible application that can generate predictions automatically.
 
 
 
