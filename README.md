@@ -50,6 +50,83 @@ For this project, the yfincance API will be used to get around eleven years wort
 | GARCH(1,1) | 0.005938 |
 | CatBoost | 0.004985|
 
+The CatBoost model was selected as the deployed model after achieving lower validation error than the statistical baseline.
+
+**Note:** The final deployed model was trained using the modelling pipeline developed in the project and is used to generate 10-day forward volatility predictions in the production application.
+
+### System Architechture
+flowchart TD
+
+subgraph group_http["HTTP Boundary"]
+  node_http_client(("HTTP API Client<br/>external caller"))
+  node_fastapi["FastAPI Application<br/>[app.py]"]
+  node_routes["Prediction Routes<br/>API routes"]
+end
+
+subgraph group_market["Market Data Pipeline"]
+  node_yahoo(("Yahoo Finance<br/>external market data"))
+  node_ingest["Raw Market Ingestion<br/>pipeline stage"]
+  node_features["Feature Engineering<br/>pipeline stage"]
+end
+
+subgraph group_forecast["Forecast Execution"]
+  node_orchestrator["Prediction Orchestrator<br/>workflow service"]
+  node_inference["CatBoost Inference<br/>model service"]
+  node_model["CatBoost Model<br/>model artifact"]
+end
+
+subgraph group_monitoring["Monitoring"]
+  node_monitor["Prediction Monitoring<br/>metrics service"]
+end
+
+subgraph group_state["Persistence"]
+  node_database["Database Engine<br/>SQLAlchemy adapter"]
+  node_store[("PostgreSQL State Store<br/>database")]
+end
+
+node_http_client -->|"HTTP request"| node_fastapi
+node_fastapi -->|"dispatches"| node_routes
+node_routes -->|"runs prediction"| node_orchestrator
+node_routes -->|"gets metrics"| node_monitor
+node_orchestrator -->|"runs monitoring"| node_monitor
+node_monitor -->|"reads and writes"| node_store
+node_orchestrator -->|"ingests data"| node_ingest
+node_ingest -->|"reads and appends"| node_store
+node_ingest -->|"downloads data"| node_yahoo
+node_orchestrator -->|"rebuilds features"| node_features
+node_features -->|"replaces features"| node_store
+node_orchestrator -->|"predicts latest"| node_inference
+node_inference -->|"reads and stores"| node_store
+node_inference -->|"loads model"| node_model
+node_ingest -->|"uses engine"| node_database
+node_features -->|"uses engine"| node_database
+node_monitor -->|"uses engine"| node_database
+node_inference -->|"uses engine"| node_database
+node_database -->|"connects to"| node_store
+
+click node_fastapi "https://github.com/noha-jung3/market-volatility-prediction/blob/main/app.py"
+click node_routes "https://github.com/noha-jung3/market-volatility-prediction/blob/main/api/routes.py"
+click node_ingest "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/ingest.py"
+click node_features "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/features.py"
+click node_orchestrator "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/predict.py"
+click node_inference "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/predict.py"
+click node_model "https://github.com/noha-jung3/market-volatility-prediction/blob/main/Models/catboost_volatility_model.pkl"
+click node_monitor "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/monitor.py"
+click node_database "https://github.com/noha-jung3/market-volatility-prediction/blob/main/src/database.py"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_http_client,node_fastapi,node_routes toneBlue
+class node_yahoo,node_ingest,node_features toneAmber
+class node_orchestrator,node_inference,node_model toneMint
+class node_monitor toneRose
+class node_database,node_store toneIndigo
+
 
 
 
