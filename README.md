@@ -64,7 +64,7 @@ The application was deployed to AWS as a containerised, scheduled machine learni
 **AWS Services used**
 
 | Service       | Purpose  |
-| ------------- | -----:|
+| ------------- | ----- |
 |Amazon ECS Fargate |	Hosts the containerised FastAPI application and prediction worker|
 |Amazon ECR|	Stores Docker container images|
 |Amazon RDS PostgreSQL|	Stores market data, engineered features, and predictions|
