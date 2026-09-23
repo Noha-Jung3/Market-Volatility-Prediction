@@ -33,19 +33,10 @@ If this were an environment in investment banking firm or other finance related 
 - This would be a *univariate regression* task as we are predicting a single value (standard deviation of log returns)
 - And this would be an *online learning* task as we will be having a continuous stream of data for our model.
 
-### The Data
-For this project, the yfincance API will be used to get around eleven years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation, however we will need to get rid of some outilers.
-
-- Open = Price at the start of the day
-- High = Highest price of that day
-- Low = Lowest price of that day
-- Close = Price at the end of the day
-- Volume = Volume traded
-
 ### Results
 
 | Model       | RMSE  |
-| ------------- | -----:|
+| ------------- | -----|
 | Naive 10 day volatility | 0.006817 |
 | GARCH(1,1) | 0.005938 |
 | CatBoost | 0.004985|
@@ -86,6 +77,122 @@ The resulting application and task logs were captured using Amazon CloudWatch.
 GitHub Actions was used to automate deployment of the API.
 
 GitHub -> GitHub Actions -> Docker build -> Amazon ECR -> Amazon ECS
+
+### Model Development 
+
+**Prediction Target**
+
+The model predicts 10day forward market volatility, calculated as the standard deviation of future log returns. The target was constructed using future returns and shifted so that only information available at prediction time was used as a model input.
+
+**The Data Features**
+
+The feature set includes historical price and volume information together with engineered return and volatility features:
+
+- Open
+- High
+- Low
+- Close
+- Volume
+- Log return
+- High-low price range
+- 5-day, 10-day and 20-day return features
+- Historical rolling volatility features
+
+Future volatility values were excluded from the model inputs to prevent target leakage.
+
+**Train, Validation, Test Split**
+
+The data was divided chronologically to reflect the time dependent nature of financial data.
+| Dataset       | Period  |
+| ------------- | -----|
+| Training | 2015 ~ 2023 |
+| Validation | 2024 ~ 2025 |
+| Test | 2026|
+
+The final test period was kept separate from model development and was not used for model selection or hyperparameter tuning.
+
+**Models**
+
+Several regression approaches were evaluated:
+
+- Linear Regression
+- Ridge Regression
+- Lasso
+- Elastic Net
+- K-Nearest Neighbours
+- Decision Tree
+- Random Forest
+- Gradient Boosting
+- AdaBoost
+- XGBoost
+- LightGBM
+- CatBoost
+- GARCH(1,1)
+
+The machine learning models were compared against both a naive volatility baseline and the GARCH statistical model.
+CatBoost was ultimately selected for deployment based on its validation performance.
+
+### Monitoring and Automated Prediction
+
+The deployed prediction pipeline performs the following steps:
+
+1. Checks previously generated predictions for available evaluation data.
+2. Retrieves new market data using yfinance.
+3. Updates the raw market data stored in PostgreSQL.
+4. Recalculates engineered features.
+5. Loads the trained CatBoost model.
+6. Generates a 10-day forward volatility prediction.
+7. Stores the prediction in PostgreSQL.
+8. Records the execution output in CloudWatch.
+
+Predictions are also categorised into volatility levels based on thresholds calculated from the training target distribution:
+- LOW
+- MEDIUM
+- HIGH
+
+**Example Prediction**
+
+A successful scheduled AWS execution produced:
+
+- Prediction date: 2026-09-22
+- Predicted 10-day volatility: 0.005136
+- Volatility level: LOW
+
+The prediction task completed successfully with exit code 0.
+
+**Project Structure**
+
+Market-Volatility-Prediction/
+│
+├── api/                    # FastAPI routes and API schemas
+├── data/                   # Local datasets
+├── frontend/               # Frontend application
+├── Models/                 # Trained model artifacts
+├── Notebooks/              # Data exploration and modelling notebooks
+├── src/
+│   ├── database.py         # Database connection
+│   ├── features.py         # Feature engineering
+│   ├── ingest.py           # Market data ingestion
+│   ├── monitor.py          # Prediction monitoring
+│   └── predict.py          # Prediction pipeline
+│
+├── scripts/
+│   └── run_prediction.py   # Scheduled prediction entry point
+│
+├── app.py                  # FastAPI application
+├── Dockerfile              # API Docker image
+├── docker-compose.yml      # Local development environment
+├── market_volatility.sql   # Database schema
+├── requirements.txt        # Python dependencies
+└── README.md
+
+
+
+
+
+
+
+
 
 
 
