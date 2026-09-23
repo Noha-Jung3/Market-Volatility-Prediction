@@ -27,24 +27,30 @@ Using multiple different Machine Learning methods, this project aims to predict 
 ### The objective
 If this were an environment in investment banking firm or other finance related firms, the objective might be to make predictions on how volatile a certain asset is and make an automated system so that informed decisions can be made in whether or not to trade/invest now or wait until things calm down.
 
-### The System Design
-Now that we have our objective, we need to think about the general system design.
+### The Machine Learning Design
 
-**Machine Learning Design:**
 - This would be a *supervised learning* task, as we can train our model with labelled examples
 - This would be a *univariate regression* task as we are predicting a single value (standard deviation of log returns)
 - And this would be an *online learning* task as we will be having a continuous stream of data for our model.
 
-The rest I'm going to figure out as I go.
-
 ### The Data
-For this project I will use the yfincance API to get around eleven years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation, however we will need to get rid of some outilers.
+For this project, the yfincance API will be used to get around eleven years worth of historical Open, High, Low, Close, Volume data from 1st Jan 2015 to 31st December 2025. There are no missing values or duplicate values, which means no imputation, however we will need to get rid of some outilers.
 
 - Open = Price at the start of the day
 - High = Highest price of that day
 - Low = Lowest price of that day
 - Close = Price at the end of the day
-- Volume = Volume traded(?)
+- Volume = Volume traded
+
+### Results
+
+| Model       | RMSE  |
+| ------------- | -----:|
+| Naive 10 day volatility | 0.006817 |
+| GARCH(1,1) | 0.005938 |
+| CatBoost | 0.004985|
+
+
 
 
 
