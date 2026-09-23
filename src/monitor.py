@@ -175,7 +175,6 @@ def get_monitoring_metrics():
 def run_monitoring():
     #Run prediction monitoring process.
     evaluation_result = evaluate_predictions()
-
     return {
         "evaluation": evaluation_result
     }
