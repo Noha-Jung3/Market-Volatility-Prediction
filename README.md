@@ -161,7 +161,7 @@ A successful scheduled AWS execution produced:
 The prediction task completed successfully with exit code 0.
 
 **Project Structure**
-
+```
 Market-Volatility-Prediction/
 │
 ├── api/                    # FastAPI routes and API schemas
@@ -185,6 +185,7 @@ Market-Volatility-Prediction/
 ├── market_volatility.sql   # Database schema
 ├── requirements.txt        # Python dependencies
 └── README.md
+```
 
 
 
