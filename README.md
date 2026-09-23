@@ -67,10 +67,21 @@ The application was deployed to AWS as a containerised, scheduled machine learni
 
 **Deployment Architechture**
 
+**ECS/Fargate**
 The FastAPI application was packaged as a Docker container and deployed to Amazon ECS using AWS Fargate.
+![Amazon ECS Fargate deployment](docs/images/aws-ecs.png)
+
 The production database was hosted using Amazon RDS PostgreSQL. Access to the database was restricted through VPC security groups rather than exposing the database publicly.
-Amazon EventBridge Scheduler was configured to launch a standalone ECS Fargate task at 8:00 AM Monday–Friday in the Australia/Melbourne timezone. The task runs the complete prediction pipeline and exits after completion.
+![Amazon RDS PostgreSQL](docs/images/aws-rds.png)
+
+Amazon EventBridge Scheduler was configured to launch a standalone ECS Fargate task at 8:00 AM Monday–Friday in the Australia/Melbourne timezone. 
+![Amazon EventBridge Scheduler1](docs/images/aws-eventbridge1.png)
+![Amazon EventBridge Scheduler2](docs/images/aws-eventbridge2.png)
+
+The task runs the complete prediction pipeline and exits after completion.
 The resulting application and task logs were captured using Amazon CloudWatch.
+
+![Successful prediction task in Amazon CloudWatch](docs/images/aws-cloudwatch.png)
 
 **CI/CD**
 
