@@ -1,12 +1,31 @@
 # Market-Volatility-Prediction
 
-Using simple Machine Learning to directly predict stock prices is notoriously difficult due to so many factors outside of our control, such as internal business decisions, global pandemics, erratic consumer behaviour, and unexpected trends. However, making informed decisions based on how chaotic the ups and downs (i.e volatililty) of prices are can be very useful and beneficial. This project aims to use Machine Learning to predict future volatility of the SPDR S&P 500 ETF (SPY) which is an exchange traded fund that tracks the performance of the S&P 500. In a sense, we're predicting unpredictability. Furthermore, this project aims to create an application in which users can determine volatility at a given day allowing for potential informed trading decisions.
+Using simple Machine Learning to directly predict stock prices is notoriously difficult due to so many factors outside of our control, such as internal business decisions, global pandemics, erratic consumer behaviour, and unexpected trends. However, making informed decisions based on how chaotic the ups and downs (i.e volatililty) of prices are can be very useful and beneficial. This project aims to use Machine Learning to predict future volatility of the SPDR S&P 500 ETF (SPY) which is an exchange traded fund that tracks the performance of the S&P 500. In a sense, we're predicting unpredictability.
+
+### Overview
+
+Market volatility is a measure of how much financial returns fluctuate over a given period. This project focuses on predicting 10 day forward volatility using historical market data.
+
+The project was developed as an end to end machine learning pipeline, covering the process from raw market data through to model deployment and automated prediction.
+
+**What the system does**
+- Retrieves historical market data using yfinance
+- Engineers return and volatility-related features
+- Predicts 10-day forward volatility using a trained CatBoost regression model
+- Compares the machine learning model against statistical and naive baselines
+- Stores market data, engineered features, and predictions in PostgreSQL
+- Exposes predictions through a FastAPI application
+- Containerises the application using Docker
+- Deploys the application to AWS using ECS Fargate
+- Runs automated weekday predictions using Amazon EventBridge Scheduler
+- Records application and prediction logs using Amazon CloudWatch
+- Uses GitHub Actions for CI/CD deployment
 
 ### The Aim
-Using multiple different Machine Learning methods this project aims to predict future volatility of the ETF so that data driven decisions can be made in trading or investing. 
+Using multiple different Machine Learning methods, this project aims to predict future volatility of the ETF so that data driven decisions can be made in trading or investing. 
 
 ### The objective
-If I were working at an investment banking firm or other finance related firm the objective might be to make predictions on how volatile a certain asset is and make an automated system so that informed decisions can be made in whether or not to trade/invest now or wait until things calm down. Since we are not working for a financial institution, I will use these finding for my own interests.
+If this were an environment in investment banking firm or other finance related firms, the objective might be to make predictions on how volatile a certain asset is and make an automated system so that informed decisions can be made in whether or not to trade/invest now or wait until things calm down.
 
 ### The System Design
 Now that we have our objective, we need to think about the general system design.
